@@ -8,15 +8,16 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import ua.waldemar.customdi.main.model.di.MainModelComponent
-import ua.waldemar.customdi.main.model.domain.ExitInteractor
+import ua.waldemar.customdi.core.di.ScopeManager
 import ua.waldemar.customdi.main.model.domain.UnexpectedError
 import ua.waldemar.customdi.main.model.domain.UnexpectedErrorInteractor
 import ua.waldemar.customdi.main.view.launch.ResultUiEvent
+import ua.waldemar.customdi.main.view.main.MainActivity.Companion.MAIN_MODULE_KEY
 
 internal sealed class MainDirection {
     data object NetworkError : MainDirection()
@@ -39,12 +40,11 @@ internal sealed class MainDirection {
 }
 
 internal class MainViewModel(
-    private val exitInteractor: ExitInteractor,
     private val unexpectedErrorInteractor: UnexpectedErrorInteractor,
 ) : ViewModel() {
 
     private val _resultUiEvent = MutableSharedFlow<ResultUiEvent>()
-    val resultUiEvent = _resultUiEvent.onEach { exitInteractor.exit() }
+    val resultUiEvent = _resultUiEvent.asSharedFlow()
 
     private val _mainDirection = Channel<MainDirection>()
     val mainDirection: Flow<MainDirection> = _mainDirection.receiveAsFlow()
@@ -102,10 +102,11 @@ internal class MainViewModel(
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                MainViewModel(
-                    MainModelComponent.mainUiDomainModule.exitInteractor,
-                    MainModelComponent.mainUiDomainModule.unexpectedErrorInteractor
-                )
+                with(ScopeManager.getScope(MAIN_MODULE_KEY)) {
+                    MainViewModel(
+                        get(),
+                    )
+                }
             }
         }
     }

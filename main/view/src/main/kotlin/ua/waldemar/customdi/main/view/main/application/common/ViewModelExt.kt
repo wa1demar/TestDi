@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ua.waldemar.customdi.main.view.main.application.screens.home.HomeViewModel
+import ua.waldemar.customdi.main.view.main.application.screens.profile.ProfileViewModel
 
 @Composable
 internal inline fun <reified VM : ViewModel> mainViewModel() =
@@ -23,5 +24,6 @@ inline fun <reified T : ViewModel> activityViewModel(factory: ViewModelProvider.
 internal inline fun <reified VM : ViewModel> createFactory(): ViewModelProvider.Factory? =
     when (VM::class) {
         HomeViewModel::class -> HomeViewModel.Factory
+        ProfileViewModel::class -> ProfileViewModel.Factory
         else -> throw IllegalStateException("Failed to create instance of: ${VM::class}")
     }

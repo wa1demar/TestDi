@@ -1,5 +1,7 @@
 package ua.waldemar.customdi.api.services
 
+import kotlinx.coroutines.delay
+
 internal class AuthService(
     private val stateService: StateService,
 ) : ApiService {
@@ -9,6 +11,7 @@ internal class AuthService(
     }
 
     suspend fun signIn(login: String, password: String): Result<String> {
+        delay(2000)
         return if (login == "vovam@paykey.com" && password == "Testing123!@") {
             Result.success("fakeUserId")
         } else {
@@ -18,6 +21,7 @@ internal class AuthService(
     }
 
     suspend fun signUp(login: String, password: String): Result<Any> {
+        delay(2000)
         return if (login != "vovam@paykey.com" && password != "Testing123!@") {
             Result.success("nothing")
         } else {

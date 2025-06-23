@@ -2,8 +2,11 @@ package ua.waldemar.customdi.main.view.main.application.screens.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,15 +24,17 @@ import ua.waldemar.customdi.main.view.main.application.common.mainViewModel
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = mainViewModel(),
+    onProfileClicked: () -> Unit
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-    HomeContent(screenState)
+    HomeContent(screenState, onProfileClicked)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeContent(
-    screenState: HomeScreenState
+    screenState: HomeScreenState,
+    onProfileClicked: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -54,7 +59,7 @@ internal fun HomeContent(
                     ErrorContent(screenState.error)
                 }
                 screenState.userInfo != null -> {
-                    Content(screenState.userInfo)
+                    Content(screenState.userInfo, onProfileClicked)
                 }
                 else -> {
                     EmptyScreenContent()
@@ -75,8 +80,12 @@ fun ColumnScope.ErrorContent(message: String) {
 }
 
 @Composable
-fun ColumnScope.Content(userInfo: UserInfoModel) {
+fun ColumnScope.Content(userInfo: UserInfoModel, onProfileClicked: () -> Unit) {
     Text("First name: ${userInfo.firstName}")
     Text("Middle name: ${userInfo.middleName}")
     Text("Last name: ${userInfo.lastName}")
+    Spacer(modifier = Modifier.height(100.dp))
+    Button(onProfileClicked) {
+        Text("Profile")
+    }
 }

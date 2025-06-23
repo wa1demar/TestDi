@@ -4,14 +4,11 @@ import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.flow.take
 import ua.waldemar.customdi.core.theme.CustomDITheme
-import ua.waldemar.customdi.di.init.InitEvent
 import ua.waldemar.customdi.main.view.launch.UiLauncher
 import ua.waldemar.customdi.presentation.AppViewModel
 import ua.waldemar.customdi.presentation.ui.application.screens.signin.navigateToSignInScreen
@@ -32,7 +29,6 @@ fun MyApp(
 ) {
     CustomDITheme {
         val navController = rememberNavController()
-
         NavHost(
             navController = navController,
             startDestination = WelcomeScreenRoute(false),
@@ -47,21 +43,6 @@ fun MyApp(
             )
             signInScreen()
             signUpScreen()
-        }
-
-        LaunchedEffect(Unit) {
-            appViewModel.initEvent.take(1)
-                .collect { event ->
-                    when (event) {
-                        is InitEvent.Auth -> {
-                            ewaUiLauncher.launch(context, event.token)
-                        }
-
-                        InitEvent.UnAuth -> navController.apply {
-                            // show error
-                        }
-                    }
-                }
         }
     }
 }

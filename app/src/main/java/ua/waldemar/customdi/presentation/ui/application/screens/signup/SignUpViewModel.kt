@@ -1,5 +1,6 @@
 package ua.waldemar.customdi.presentation.ui.application.screens.signup
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.take
-import ua.waldemar.customdi.di.DomainProvider
+import ua.waldemar.customdi.core.di.ScopeManager
 import ua.waldemar.customdi.domain.ExecStatus
 import ua.waldemar.customdi.domain.SignInInteractor
 import ua.waldemar.customdi.domain.SignUpInteractor
@@ -33,6 +34,11 @@ class SignUpViewModel(
 
     val launchUiEvent: Flow<UserId> = signInInteractor.userId.filter { it.isNotBlank() }
 
+    init {
+        Log.d("LogLifecycle", "SignUpViewModel created: $this")
+        Log.d("LogLifecycle", "SignUpViewModel@signInInteractor: $signInInteractor")
+        Log.d("LogLifecycle", "SignUpViewModel@signUpInteractor: $signUpInteractor")
+    }
     fun onSignUpClicked() {
         _signUpStatus.value = ExecStatus.InProgress
         combine(email, password) { email, password ->
@@ -55,13 +61,20 @@ class SignUpViewModel(
         _email.value = text?.toString() ?: ""
     }
 
+    override fun onCleared() {
+        Log.d("LogLifecycle", "SignUpViewModel cleared: $this")
+        super.onCleared()
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                SignUpViewModel(
-                    DomainProvider.signUpInteractor,
-                    DomainProvider.signInInteractor
-                )
+                with(ScopeManager.getScope("app")) {
+                    SignUpViewModel(
+                        get(),
+                        get()
+                    )
+                }
             }
         }
     }

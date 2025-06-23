@@ -1,5 +1,6 @@
 package ua.waldemar.customdi.main.model.data
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -14,6 +15,10 @@ import ua.waldemar.customdi.api.services.ApiState
 import ua.waldemar.customdi.main.model.domain.UnexpectedError
 
 internal class UnexpectedErrorHandler() {
+    init {
+        Log.d("LogLifecycle", "UnexpectedErrorHandler created: $this")
+    }
+
     private val _errors = MutableSharedFlow<UnexpectedError>(replay = 1)
     val errors: Flow<UnexpectedError> = merge(
         _errors,

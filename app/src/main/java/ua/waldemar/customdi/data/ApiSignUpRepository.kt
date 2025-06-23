@@ -1,25 +1,37 @@
 package ua.waldemar.customdi.data
 
+import android.util.Log
+import ua.waldemar.customdi.api.AccessAPI
 import ua.waldemar.customdi.domain.ExecStatus
 import ua.waldemar.customdi.domain.SignUpRepository
-import ua.waldemar.customdi.main.view.AccessUI
-import ua.waldemar.customdi.main.view.helpers.SignUpResult
-import ua.waldemar.customdi.main.view.helpers.SignUpTooManyRequests
 
 class ApiSignUpRepository : SignUpRepository {
 
-    private val signUpHelper by lazy {
-        AccessUI.signUpHelper
+    init {
+        Log.d("LogLifecycle", "ApiSignUpRepository created: $this")
     }
 
     override suspend fun signUp(email: String, password: String): ExecStatus {
-        return signUpHelper.signUp(email, password).asExecStatus()
+        return AccessAPI.signUp(email, password).asExecStatus()
     }
 
-    private fun SignUpResult.asExecStatus() = when (this) {
-        is SignUpResult.Success -> ExecStatus.Success
-        is SignUpResult.Failed.Network -> ExecStatus.Failed.Network
-        is SignUpTooManyRequests -> ExecStatus.Failed.TooManyRequests
-        else -> ExecStatus.Failed.General
+    private fun Result<Any>.asExecStatus(): ExecStatus = when {
+        isSuccess -> {
+            val value = getOrNull()!!
+            when (value) {
+                is String -> ExecStatus.Success
+                else -> ExecStatus.Failed.General
+            }
+        }
+        isFailure -> {
+            val error = exceptionOrNull()!!
+            when (error) {
+                // check network error and TooManyRequestsError
+//            is SignInNetworkError -> ExecStatus.Failed.Network
+//            is SignInTooManyRequestsError -> ExecStatus.Failed.TooManyRequests
+                else -> ExecStatus.Failed.General
+            }
+        }
+        else -> throw IllegalStateException("Unknown result")
     }
 }

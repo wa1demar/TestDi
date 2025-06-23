@@ -1,33 +1,40 @@
 package ua.waldemar.customdi.data
 
+import android.util.Log
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import ua.waldemar.customdi.api.AccessAPI
 import ua.waldemar.customdi.domain.ExecStatus
 import ua.waldemar.customdi.domain.SignInRepository
-import ua.waldemar.customdi.main.view.AccessUI
-import ua.waldemar.customdi.main.view.helpers.SignInResult
-import ua.waldemar.customdi.main.view.helpers.SignInTooManyRequests
 
 class ApiSignInRepository() : SignInRepository {
-
-    private val signInHelper by lazy {
-        AccessUI.signInHelper
-    }
 
     private val _userId = MutableSharedFlow<String>()
     override val userId = _userId.asSharedFlow()
 
-    override suspend fun signIn(email: String, password: String): ExecStatus {
-        return signInHelper.signIn(email, password).asExecStatus()
+    init {
+        Log.d("LogLifecycle", "ApiSignInRepository created: $this")
     }
 
-    private suspend fun SignInResult.asExecStatus() = when (this) {
-        is SignInResult.Success -> {
+    override suspend fun signIn(email: String, password: String): ExecStatus {
+        return AccessAPI.signIn(email, password).asExecStatus()
+    }
+
+    private suspend fun Result<String>.asExecStatus(): ExecStatus = when {
+        isSuccess -> {
+            val userId = getOrNull()!!
             _userId.emit(userId)
             ExecStatus.Success
         }
-        is SignInResult.Failed.Network -> ExecStatus.Failed.Network
-        is SignInTooManyRequests -> ExecStatus.Failed.TooManyRequests
-        else -> ExecStatus.Failed.General
+        isFailure -> {
+            val error = exceptionOrNull()!!
+            when (error) {
+                // check network error and TooManyRequestsError
+//            is SignInNetworkError -> SignInResult.Failed.Network
+//            is SignInTooManyRequestsError -> SignInTooManyRequests
+                else ->  ExecStatus.Failed.General
+            }
+        }
+        else -> throw IllegalStateException("Unknown result")
     }
 }

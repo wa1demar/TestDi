@@ -1,5 +1,6 @@
 package ua.waldemar.customdi.main.model.data
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,7 +13,9 @@ import ua.waldemar.customdi.main.model.domain.UserInfoModel
 internal class ApiUserDetailsRepository(
     private val errorHandler: UnexpectedErrorHandler,
 ) : UserDetailsRepository {
-
+    init {
+        Log.d("LogLifecycle", "ApiUserDetailsRepository created: $this")
+    }
     private val _userModelState = MutableSharedFlow<Result<UserInfoModel>>(replay = 1)
     override val userInfo: Flow<Result<UserInfoModel>> = _userModelState.asSharedFlow()
 

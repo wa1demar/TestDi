@@ -1,5 +1,6 @@
 package ua.waldemar.customdi.presentation.ui.application.screens.signin
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import ua.waldemar.customdi.di.DomainProvider
+import ua.waldemar.customdi.core.di.ScopeManager
 import ua.waldemar.customdi.domain.ExecStatus
 import ua.waldemar.customdi.domain.SignInInteractor
 
@@ -30,12 +31,18 @@ class SignInViewModel(
 
     val launchUiEvent: Flow<String> = signInInteractor.userId
         .filter { userId -> userId.isNotBlank() }
+        .onEach { _signInProcess.emit(ExecStatus.Idle) }
 
     private val _signInProcess = MutableStateFlow<ExecStatus>(ExecStatus.Idle)
     val signInUIStatus: Flow<ExecStatus> = _signInProcess.filter { status ->
         status != ExecStatus.Success
     }.onEach { status ->
         if (status is ExecStatus.Failed) _password.value = ""
+    }
+
+    init {
+        Log.d("LogLifecycle", "SignInViewModel created: $this")
+        Log.d("LogLifecycle", "SignInViewModel@signInInteractor: $signInInteractor")
     }
 
     fun onEmailChanges(value: String) = viewModelScope.launch {
@@ -57,10 +64,17 @@ class SignInViewModel(
         }.take(1).launchIn(viewModelScope)
     }
 
+    override fun onCleared() {
+        Log.d("LogLifecycle", "SignInViewModel cleared: $this")
+        super.onCleared()
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                SignInViewModel(DomainProvider.signInInteractor)
+                with(ScopeManager.getScope("app")) {
+                    SignInViewModel(get())
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package ua.waldemar.customdi.main.view.main.application.screens.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -7,13 +8,12 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import ua.waldemar.customdi.main.model.di.MainModelComponent
+import ua.waldemar.customdi.core.di.ScopeManager
 import ua.waldemar.customdi.main.model.domain.UserInfoModel
 import ua.waldemar.customdi.main.model.domain.usecases.GetUserInfoFlow
 import ua.waldemar.customdi.main.model.domain.usecases.RefreshUserInfo
+import ua.waldemar.customdi.main.view.main.MainActivity.Companion.MAIN_MODULE_KEY
 
 data class HomeScreenState(
     val error: String? = null,
@@ -30,6 +30,10 @@ class HomeViewModel(
     val screenState = _screenState.asStateFlow()
 
     init {
+        Log.d("LogLifecycle", "HomeViewModel created: $this")
+        Log.d("LogLifecycle", "HomeViewModel@getUserInfoFlow: $getUserInfoFlow")
+        Log.d("LogLifecycle", "HomeViewModel@refreshUserInfo: $refreshUserInfo")
+
         viewModelScope.launch {
             launch { refreshUserInfo() }
             launch {
@@ -50,13 +54,18 @@ class HomeViewModel(
         }
     }
 
+    override fun onCleared() {
+        Log.d("LogLifecycle", "HomeViewModel cleared: $this")
+        super.onCleared()
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                with (MainModelComponent.mainUiDomainModule) {
+                with (ScopeManager.getScope(MAIN_MODULE_KEY)) {
                     HomeViewModel(
-                        getUserInfoFlow,
-                        refreshUserInfo
+                        get(),
+                        get()
                     )
                 }
             }

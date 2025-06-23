@@ -34,6 +34,7 @@ android {
 dependencies {
     implementation(projects.main.model)
     implementation(projects.core.theme)
+    implementation(projects.core.di)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
