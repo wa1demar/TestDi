@@ -41,7 +41,11 @@ android {
 }
 
 dependencies {
+    implementation(projects.appfeature.common)
+    implementation(projects.appfeature.forgot.presentation)
+
     implementation(projects.main.view)
+    implementation(projects.core.di)
     implementation(projects.core.theme)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
