@@ -12,22 +12,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import ua.waldemar.customdi.appfeature.common.EventConsumer
+import ua.waldemar.customdi.appfeature.common.LocalNavController
 import ua.waldemar.customdi.appfeature.common.featureViewModel
+import ua.waldemar.customdi.appfeature.forgot.presentation.ui.code.navigateToForgotPasswordCode
 
 @Composable
 internal fun ForgotPasswordEmailScreen(
     viewModel: ForgotPasswordEmailViewModel = featureViewModel(),
-    navigateToCodeScreen: () -> Unit
 ) {
     val email by viewModel.email.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
@@ -39,8 +36,9 @@ internal fun ForgotPasswordEmailScreen(
         onContinueClicked = viewModel::onContinueClicked
     )
 
+    val navController = LocalNavController.current
     EventConsumer(viewModel.nextEvent) {
-        navigateToCodeScreen()
+        navController.navigateToForgotPasswordCode()
     }
 }
 

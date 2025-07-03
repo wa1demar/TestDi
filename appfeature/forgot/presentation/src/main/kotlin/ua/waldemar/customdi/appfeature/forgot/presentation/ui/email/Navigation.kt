@@ -12,10 +12,8 @@ data object ForgotPasswordEmailRoute
 fun NavController.navigateToForgotPasswordEmail(navOptions: NavOptions? = null) =
     navigate(ForgotPasswordEmailRoute, navOptions)
 
-fun NavGraphBuilder.forgotPasswordEmailScreen(
-    navigateToCodeScreen: () -> Unit
-) {
+fun NavGraphBuilder.forgotPasswordEmailScreen() {
     composable<ForgotPasswordEmailRoute> { entry ->
-        ForgotPasswordEmailScreen(navigateToCodeScreen = navigateToCodeScreen)
+        ForgotPasswordEmailScreen()
     }
 }

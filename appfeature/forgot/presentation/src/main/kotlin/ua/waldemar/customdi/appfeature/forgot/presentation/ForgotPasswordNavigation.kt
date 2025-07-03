@@ -10,20 +10,16 @@ import ua.waldemar.customdi.appfeature.forgot.presentation.ui.email.ForgotPasswo
 import ua.waldemar.customdi.appfeature.forgot.presentation.ui.email.forgotPasswordEmailScreen
 
 @Serializable
-internal data class ForgotPasswordGraph(val predefinedEmail: String?)
+data class ForgotPasswordGraph(val predefinedEmail: String?)
 
 fun NavController.navigateToForgotPasswordGraph(predefinedEmail: String?, navOptions: NavOptions? = null) =
     navigate(ForgotPasswordGraph(predefinedEmail), navOptions)
 
-fun NavGraphBuilder.forgotPasswordGraph(
-    navigateToCodeScreen: () -> Unit
-) {
+fun NavGraphBuilder.forgotPasswordGraph() {
     navigation<ForgotPasswordGraph>(
         startDestination = ForgotPasswordEmailRoute
     ) {
-        forgotPasswordEmailScreen(
-            navigateToCodeScreen = navigateToCodeScreen
-        )
+        forgotPasswordEmailScreen()
         forgotPasswordCodeScreen()
     }
 }
