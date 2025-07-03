@@ -6,10 +6,12 @@ import kotlinx.coroutines.flow.asSharedFlow
 import ua.waldemar.customdi.api.AccessAPI
 import ua.waldemar.customdi.api.error.ApiErrorCodes
 import ua.waldemar.customdi.api.model.UserApiModel
+import ua.waldemar.customdi.main.model.data.api.ApiDataSource
 import ua.waldemar.customdi.main.model.domain.UserDetailsRepository
 import ua.waldemar.customdi.main.model.domain.UserInfoModel
 
 internal class ApiUserDetailsRepository(
+    private val apiDataSource: ApiDataSource,
     private val errorHandler: UnexpectedErrorHandler,
 ) : UserDetailsRepository {
 
@@ -17,7 +19,7 @@ internal class ApiUserDetailsRepository(
     override val userInfo: Flow<Result<UserInfoModel>> = _userModelState.asSharedFlow()
 
     override suspend fun refreshCurrentUser() {
-        AccessAPI.getUser(listOf("firstName", "lastName", "middleName"))
+        apiDataSource.getUser(listOf("firstName", "lastName", "middleName"))
             .onUnexpectedErrorNull(ApiErrorCodes.TOO_MANY_REQUESTS) { error ->
                 errorHandler.handle(error)
             }?.let { result ->

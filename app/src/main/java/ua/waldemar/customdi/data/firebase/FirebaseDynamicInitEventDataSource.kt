@@ -17,7 +17,6 @@ class FirebaseDynamicInitEventDataSource( private val context: Context) {
 
     suspend fun initUi(data: String?) {
         // check dynamic link and then
-        AccessUI.setup(context, "key", true)
         _initEvent.emit(InitEvent.UnAuth)
     }
 }

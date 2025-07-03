@@ -26,8 +26,7 @@ object MainModelComponent {
         appDataModule = AppDataModule(context)
         appDomainModule = AppDomainModule(appDataModule)
         AccessAPI.apply {
-            val deviceId = withContext(Dispatchers.IO) { DeviceIdSource(context).deviceId }
-            setup(context, ApiConfiguration(apiKey, deviceId, allowPinning))
+            setup(context, ApiConfiguration(apiKey, allowPinning))
             launch()
         }
     }

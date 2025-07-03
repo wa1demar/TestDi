@@ -10,15 +10,17 @@ import ua.waldemar.customdi.main.view.helpers.SignInTooManyRequests
 
 class ApiSignInRepository() : SignInRepository {
 
-    private val signInHelper by lazy {
-        AccessUI.signInHelper
-    }
+//    private val signInHelper by lazy {
+//        AccessUI.signInHelper
+//    }
 
     private val _userId = MutableSharedFlow<String>()
     override val userId = _userId.asSharedFlow()
 
     override suspend fun signIn(email: String, password: String): ExecStatus {
-        return signInHelper.signIn(email, password).asExecStatus()
+//        return signInHelper.signIn(email, password).asExecStatus()
+        _userId.emit("userId")
+        return ExecStatus.Success
     }
 
     private suspend fun SignInResult.asExecStatus() = when (this) {

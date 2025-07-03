@@ -1,28 +1,22 @@
-package ua.waldemar.customdi.main.model.di
+package ua.waldemar.customdi.main.model.di_v2.modules
 
-import android.content.Context
 import ua.waldemar.customdi.main.model.data.ApiUnexpectedErrorRepository
 import ua.waldemar.customdi.main.model.data.ApiUserDetailsRepository
 import ua.waldemar.customdi.main.model.data.UnexpectedErrorHandler
 import ua.waldemar.customdi.main.model.domain.UnexpectedErrorRepository
 import ua.waldemar.customdi.main.model.domain.UserDetailsRepository
 
-internal class MainUiDataModule(
-    private val context: Context,
-    userId: String,
-    private val appDataModule: AppDataModule,
-) : UiDataModule {
+class DataModule(dataSourceModule: DataSourceModule) {
 
     private val errorHandler: UnexpectedErrorHandler by lazy {
         UnexpectedErrorHandler()
     }
 
-    override val unexpectedErrorRepository: UnexpectedErrorRepository by lazy {
+    val unexpectedErrorRepository: UnexpectedErrorRepository by lazy {
         ApiUnexpectedErrorRepository(errorHandler)
     }
 
-    override val userDetailsRepository: UserDetailsRepository by lazy {
-        ApiUserDetailsRepository(appDataModule.apiDataSource, errorHandler)
+    val userRepository: UserDetailsRepository by lazy {
+        ApiUserDetailsRepository(dataSourceModule.apiDataSource, errorHandler)
     }
-
 }

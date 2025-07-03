@@ -1,19 +1,14 @@
 package ua.waldemar.customdi.main.view.main
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import ua.waldemar.customdi.main.model.di.MainModelComponent
-import ua.waldemar.customdi.main.model.domain.ExitInteractor
 import ua.waldemar.customdi.main.model.domain.UnexpectedError
 import ua.waldemar.customdi.main.model.domain.UnexpectedErrorInteractor
 import ua.waldemar.customdi.main.view.launch.ResultUiEvent
@@ -39,12 +34,11 @@ internal sealed class MainDirection {
 }
 
 internal class MainViewModel(
-    private val exitInteractor: ExitInteractor,
     private val unexpectedErrorInteractor: UnexpectedErrorInteractor,
 ) : ViewModel() {
 
-    private val _resultUiEvent = MutableSharedFlow<ResultUiEvent>()
-    val resultUiEvent = _resultUiEvent.onEach { exitInteractor.exit() }
+    private val _resultUiEvent = Channel<ResultUiEvent>()
+    val resultUiEvent: ReceiveChannel<ResultUiEvent> = _resultUiEvent
 
     private val _mainDirection = Channel<MainDirection>()
     val mainDirection: Flow<MainDirection> = _mainDirection.receiveAsFlow()
@@ -58,7 +52,7 @@ internal class MainViewModel(
             when (error) {
                 UnexpectedError.AuthFailure -> {
                     // clear session
-                    _resultUiEvent.emit(ResultUiEvent.ERROR)
+                    _resultUiEvent.send(ResultUiEvent.ERROR)
                 }
                 UnexpectedError.BankNotApproved -> {
                     _mainDirection.send(MainDirection.FinancierRedirect())
@@ -96,17 +90,6 @@ internal class MainViewModel(
     fun onTooManyRequestsError() {
         viewModelScope.launch {
             // show dialog
-        }
-    }
-
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                MainViewModel(
-                    MainModelComponent.mainUiDomainModule.exitInteractor,
-                    MainModelComponent.mainUiDomainModule.unexpectedErrorInteractor
-                )
-            }
         }
     }
 }

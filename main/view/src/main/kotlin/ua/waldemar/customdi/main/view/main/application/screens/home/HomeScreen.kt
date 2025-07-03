@@ -16,11 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ua.waldemar.customdi.main.model.domain.UserInfoModel
-import ua.waldemar.customdi.main.view.main.application.common.mainViewModel
+import ua.waldemar.customdi.main.view.main.application.common.featureViewModel
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = mainViewModel(),
+    viewModel: HomeViewModel = featureViewModel(),
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     HomeContent(screenState)

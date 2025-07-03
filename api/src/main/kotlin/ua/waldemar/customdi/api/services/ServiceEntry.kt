@@ -12,6 +12,6 @@ internal fun ServiceEntry.launchEntryService(options: LaunchOptions) {
     isLaunched = true
 }
 
-data class ApiConfiguration(val apiKey: String, val deviceId: String, val allowPinning: Boolean = false)
+data class ApiConfiguration(val apiKey: String, val allowPinning: Boolean = false)
 
 class LaunchOptions

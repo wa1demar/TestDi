@@ -8,12 +8,13 @@ import ua.waldemar.customdi.main.view.helpers.SignUpTooManyRequests
 
 class ApiSignUpRepository : SignUpRepository {
 
-    private val signUpHelper by lazy {
-        AccessUI.signUpHelper
-    }
+//    private val signUpHelper by lazy {
+//        AccessUI.signUpHelper
+//    }
 
     override suspend fun signUp(email: String, password: String): ExecStatus {
-        return signUpHelper.signUp(email, password).asExecStatus()
+//        return signUpHelper.signUp(email, password).asExecStatus()
+        return ExecStatus.Success
     }
 
     private fun SignUpResult.asExecStatus() = when (this) {
