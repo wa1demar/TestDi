@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import ua.waldemar.customdi.data.di.DataContainer
 import ua.waldemar.customdi.main.di.modules.AuthUseCaseModule
-import ua.waldemar.customdi.main.di.modules.InitUseCaseModule
 
 class AppContainer(appContext: Context) {
 
@@ -21,14 +20,8 @@ class AppContainer(appContext: Context) {
         }
     }
 
-    private val initUseCaseModule by lazy {
-        with(dataContainer) {
-            InitUseCaseModule(initUiRepository)
-        }
-    }
-
     val viewModelCreators: Map<Class<out ViewModel>, () -> ViewModel> by lazy {
-        componentManager.forgotPasswordComponent.viewModelCreators + baseCreators()
+        componentManager.getOrCreateForgotPasswordComponent().viewModelCreators + baseCreators()
     }
 
     private fun baseCreators(): Map<Class<out ViewModel>, () -> ViewModel> {

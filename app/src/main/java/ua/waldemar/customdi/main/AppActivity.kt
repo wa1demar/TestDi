@@ -8,13 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import ua.waldemar.customdi.main.view.AccessUI
 import ua.waldemar.customdi.main.view.launch.UiLauncher
 import ua.waldemar.customdi.core.theme.CustomDITheme
+import ua.waldemar.customdi.main.publicapi.di.MainPublicComponent
 
 class AppActivity : AppCompatActivity() {
 
@@ -24,6 +24,7 @@ class AppActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MainPublicComponent.create()
         enableEdgeToEdge()
         setContent {
             CustomDITheme {
@@ -55,5 +56,10 @@ class AppActivity : AppCompatActivity() {
 //                    ResultUiEvent.END_SESSION -> viewModel.onEndSession()
 //                }
             }.launchIn(lifecycleScope)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MainPublicComponent.clear()
     }
 }

@@ -2,7 +2,7 @@ package ua.waldemar.customdi.main.view.di
 
 import androidx.lifecycle.ViewModel
 import ua.waldemar.customdi.core.di.ViewModelFactoryContributor
-import ua.waldemar.customdi.main.model.di_v2.modules.DomainModule
+import ua.waldemar.customdi.main.model.di.modules.DomainModule
 import ua.waldemar.customdi.main.view.main.MainViewModel
 import ua.waldemar.customdi.main.view.main.application.screens.home.HomeViewModel
 

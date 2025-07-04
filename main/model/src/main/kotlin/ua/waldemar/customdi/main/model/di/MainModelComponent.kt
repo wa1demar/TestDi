@@ -1,42 +1,33 @@
 package ua.waldemar.customdi.main.model.di
 
 import android.content.Context
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import ua.waldemar.customdi.api.AccessAPI
-import ua.waldemar.customdi.api.services.ApiConfiguration
-import ua.waldemar.customdi.main.model.data.DeviceIdSource
+import android.util.Log
+import ua.waldemar.customdi.main.model.di.modules.DomainModule
 
-object MainModelComponent {
-    private lateinit var mainModuleScope: MainUiModuleScope
+class MainModelComponent(
+    val domainModule: DomainModule
+) {
+    companion object {
+        @Volatile
+        private var instance: MainModelComponent? = null
 
-    lateinit var appDomainModule: AppDomainModule
-        private set
-
-    lateinit var appDataModule: AppDataModule
-        private set
-
-    val mainUiDomainModule: MainUiDomainModule
-        get() = mainModuleScope.domainModule
-
-    val isInitialized: Boolean
-        get() = ::mainModuleScope.isInitialized && ::appDomainModule.isInitialized
-
-    suspend fun setUp(context: Context, apiKey: String, allowPinning: Boolean) {
-        appDataModule = AppDataModule(context)
-        appDomainModule = AppDomainModule(appDataModule)
-        AccessAPI.apply {
-            setup(context, ApiConfiguration(apiKey, allowPinning))
-            launch()
+        fun create(context: Context, userId: String): MainModelComponent {
+            Log.d("MainModelComponent", "Creating DI scope for userId=$userId")
+            return instance ?: synchronized(this) {
+                instance ?: MainModelComponentFactory.create(context, userId).also {
+                    instance = it
+                    Log.d("MainModelComponent", "DI scope created")
+                }
+            }
         }
-    }
 
-    fun createUiScope(context: Context, userId: String) {
-        if (isInitialized) mainModuleScope.close()
-        mainModuleScope = MainUiModuleScope(
-            context,
-            userId,
-            appDomainModule.appDataModule,
-        )
+        fun get(): MainModelComponent = requireNotNull(instance) {
+            "MainModelComponent not initialized. Call create() first."
+        }
+
+        fun clear() {
+            instance = null
+            Log.d("MainModelComponent", "Clearing DI scope")
+        }
     }
 }

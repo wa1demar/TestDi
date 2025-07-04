@@ -1,20 +1,14 @@
 package ua.waldemar.customdi.main.view.di
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import ua.waldemar.customdi.core.di.ViewModelFactoryContributor
-import ua.waldemar.customdi.main.model.di_v2.MainModelComponent
+import ua.waldemar.customdi.main.model.di.MainModelComponent
 
-class MainViewComponent(
-    context: Context,
-    userId: String
-) {
-
-    private val model = MainModelComponent.create(context.applicationContext, userId)
+class MainViewComponent() {
 
     private val contributors: List<ViewModelFactoryContributor> by lazy {
         listOf(
-            MainViewModelFactoryContributor(model.domainModule)
+            MainViewModelFactoryContributor(MainModelComponent.get().domainModule)
         )
     }
 

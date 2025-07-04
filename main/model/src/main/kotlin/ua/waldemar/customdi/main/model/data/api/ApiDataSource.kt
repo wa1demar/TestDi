@@ -6,6 +6,4 @@ import ua.waldemar.customdi.api.services.ApiState
 
 interface ApiDataSource {
     val stateFlow: Flow<ApiState>
-
-    suspend fun getUser(expandOptions: List<String>?): Result<UserApiModel>
 }

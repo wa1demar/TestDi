@@ -6,7 +6,6 @@ import ua.waldemar.customdi.appfeature.common.ExecStatus
 class SignInInteractor(
     private val signInRepository: SignInRepository,
 ) {
-
     val userId: Flow<String> = signInRepository.userId
 
     suspend fun signIn(email: String, password: String): ExecStatus =

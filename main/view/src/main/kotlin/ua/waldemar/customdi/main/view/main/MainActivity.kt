@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ua.waldemar.customdi.main.view.main.application.MainApp
 import ua.waldemar.customdi.core.theme.CustomDITheme
-import ua.waldemar.customdi.main.model.di_v2.MainModelComponent
+import ua.waldemar.customdi.main.view.di.MainDI
 import ua.waldemar.customdi.main.view.di.MainViewComponent
 import ua.waldemar.customdi.main.view.main.application.common.LocalViewModelFactoryProvider
 
@@ -21,9 +21,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // initialization
-        val userId = intent.getStringExtra("userId")
-        if (userId == null) finish()
-        component = MainViewComponent(this, userId!!)
+        val userId: String = intent.getStringExtra("userId") ?: run {
+            finish()
+            return
+        }
+        MainDI.init(applicationContext, userId)
+        component = MainViewComponent()
 
         setContent {
             CustomDITheme {
@@ -44,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        MainModelComponent.clear()
+        MainDI.destroy()
     }
 
     companion object {

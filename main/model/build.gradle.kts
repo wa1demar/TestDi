@@ -29,6 +29,8 @@ android {
 dependencies {
 
     implementation(projects.api)
+    implementation(projects.main.shared.domain)
+    implementation(projects.main.shared.data)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 }

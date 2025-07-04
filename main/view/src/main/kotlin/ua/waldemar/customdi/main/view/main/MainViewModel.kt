@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import ua.waldemar.customdi.main.model.domain.UnexpectedError
 import ua.waldemar.customdi.main.model.domain.UnexpectedErrorInteractor
+import ua.waldemar.customdi.main.shared.domain.UnexpectedError
 import ua.waldemar.customdi.main.view.launch.ResultUiEvent
 
 internal sealed class MainDirection {

@@ -2,19 +2,14 @@ package ua.waldemar.customdi.data
 
 import ua.waldemar.customdi.appfeature.common.ExecStatus
 import ua.waldemar.customdi.domain.SignUpRepository
-import ua.waldemar.customdi.main.view.AccessUI
-import ua.waldemar.customdi.main.view.helpers.SignUpResult
-import ua.waldemar.customdi.main.view.helpers.SignUpTooManyRequests
+import ua.waldemar.customdi.main.publicapi.AuthFacade
+import ua.waldemar.customdi.main.publicapi.SignUpResult
+import ua.waldemar.customdi.main.publicapi.SignUpTooManyRequests
 
 class ApiSignUpRepository : SignUpRepository {
 
-//    private val signUpHelper by lazy {
-//        AccessUI.signUpHelper
-//    }
-
     override suspend fun signUp(email: String, password: String): ExecStatus {
-//        return signUpHelper.signUp(email, password).asExecStatus()
-        return ExecStatus.Success
+        return AuthFacade.signUp(email, password).asExecStatus()
     }
 
     private fun SignUpResult.asExecStatus() = when (this) {

@@ -32,7 +32,9 @@ android {
 }
 
 dependencies {
+    implementation(projects.main.shared.domain)
     implementation(projects.main.model)
+
     implementation(projects.core.di)
     implementation(projects.core.theme)
     implementation(libs.androidx.core.ktx)
