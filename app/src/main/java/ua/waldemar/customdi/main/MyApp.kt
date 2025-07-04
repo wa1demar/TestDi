@@ -53,6 +53,7 @@ fun MyApp(
                 )
                 signInScreen(
                     navigateToForgot = {
+                        appContainer.getOrCreateForgotPasswordComponent()
                         navController.navigateToForgotPasswordGraph("")
                     }
                 )
