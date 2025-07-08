@@ -34,8 +34,12 @@ android {
 dependencies {
     implementation(projects.main.shared.domain)
     implementation(projects.main.model)
+    implementation(projects.main.feature.history.presentation)
+    implementation(projects.main.feature.settings.presentation)
+    implementation(projects.main.feature.updatepassword.presentation)
 
     implementation(projects.core.di)
+    implementation(projects.core.feature)
     implementation(projects.core.theme)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

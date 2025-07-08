@@ -2,6 +2,7 @@ package ua.waldemar.customdi.api
 
 import android.content.Context
 import kotlinx.coroutines.flow.Flow
+import ua.waldemar.customdi.api.model.HistoryModel
 import ua.waldemar.customdi.api.model.UserApiModel
 import ua.waldemar.customdi.api.services.ApiConfiguration
 import ua.waldemar.customdi.api.services.ApiState
@@ -50,6 +51,11 @@ object AccessAPI {
     @JvmSynthetic
     suspend fun signUp(login: String, password: String): Result<Any> {
         return serviceManager.authService.signUp(login, password)
+    }
+
+    @JvmSynthetic
+    suspend fun getHistory(): Result<List<HistoryModel>> {
+        return serviceManager.requestService.getHistory()
     }
 
     @JvmSynthetic

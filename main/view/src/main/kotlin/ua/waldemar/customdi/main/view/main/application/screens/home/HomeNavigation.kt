@@ -12,8 +12,14 @@ internal data object HomeScreenRoute
 internal fun NavController.navigateToHomeScreen(navOptions: NavOptions? = null) =
     navigate(HomeScreenRoute, navOptions)
 
-internal fun NavGraphBuilder.homeScreen() {
+internal fun NavGraphBuilder.homeScreen(
+    onHistoryClicked: () -> Unit,
+    onSettingsClicked: () -> Unit,
+) {
     composable<HomeScreenRoute> {
-        HomeScreen()
+        HomeScreen(
+            onHistoryClicked = onHistoryClicked,
+            onSettingsClicked = onSettingsClicked,
+        )
     }
 }

@@ -32,6 +32,7 @@ android {
 dependencies {
     implementation(projects.core.theme)
     implementation(projects.core.di)
+    implementation(projects.core.feature)
     implementation(projects.appfeature.forgot.domain)
     implementation(projects.appfeature.forgot.data)
     implementation(libs.androidx.core.ktx)

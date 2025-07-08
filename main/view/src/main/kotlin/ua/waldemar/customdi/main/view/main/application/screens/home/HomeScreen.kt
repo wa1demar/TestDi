@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,21 +16,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import ua.waldemar.customdi.core.feature.featureViewModel
 import ua.waldemar.customdi.main.model.domain.UserInfoModel
-import ua.waldemar.customdi.main.view.main.application.common.featureViewModel
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = featureViewModel(),
+    onHistoryClicked: () -> Unit,
+    onSettingsClicked: () -> Unit
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-    HomeContent(screenState)
+    HomeContent(screenState, onHistoryClicked, onSettingsClicked)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeContent(
-    screenState: HomeScreenState
+    screenState: HomeScreenState,
+    onHistoryClicked: () -> Unit,
+    onSettingsClicked: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -59,6 +64,14 @@ internal fun HomeContent(
                 else -> {
                     EmptyScreenContent()
                 }
+            }
+
+            Button(onHistoryClicked) {
+                Text(text = "History")
+            }
+
+            Button(onSettingsClicked) {
+                Text(text = "Settings")
             }
         }
     }

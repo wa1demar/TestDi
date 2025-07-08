@@ -6,15 +6,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import ua.waldemar.customdi.appfeature.common.LocalComponentActivity
-import ua.waldemar.customdi.appfeature.common.LocalNavController
-import ua.waldemar.customdi.appfeature.common.LocalViewModelFactoryProvider
-import ua.waldemar.customdi.appfeature.common.TrackGraphExit
-import ua.waldemar.customdi.appfeature.forgot.presentation.ForgotPasswordGraph
 import ua.waldemar.customdi.appfeature.forgot.presentation.forgotPasswordGraph
 import ua.waldemar.customdi.appfeature.forgot.presentation.navigateToForgotPasswordGraph
+import ua.waldemar.customdi.core.feature.LocalNavController
 import ua.waldemar.customdi.core.theme.CustomDITheme
 import ua.waldemar.customdi.main.view.launch.UiLauncher
-import ua.waldemar.customdi.presentation.ui.common.createFactory
 import ua.waldemar.customdi.presentation.ui.screens.signin.navigateToSignInScreen
 import ua.waldemar.customdi.presentation.ui.screens.signin.signInScreen
 import ua.waldemar.customdi.presentation.ui.screens.signup.navigateToSignUpScreen
@@ -34,9 +30,6 @@ fun MyApp(
     CustomDITheme {
         val navController = rememberNavController()
         CompositionLocalProvider(
-            LocalViewModelFactoryProvider provides { modelClass ->
-                createFactory(appContainer, modelClass)
-            },
             LocalNavController provides navController
         ) {
             NavHost(
@@ -53,17 +46,12 @@ fun MyApp(
                 )
                 signInScreen(
                     navigateToForgot = {
-                        appContainer.getOrCreateForgotPasswordComponent()
                         navController.navigateToForgotPasswordGraph("")
                     }
                 )
                 signUpScreen()
 
                 forgotPasswordGraph()
-            }
-
-            TrackGraphExit(ForgotPasswordGraph::class) {
-                appContainer.clearForgotPasswordScope()
             }
         }
     }

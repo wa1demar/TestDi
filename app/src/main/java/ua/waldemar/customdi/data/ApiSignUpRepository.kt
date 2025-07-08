@@ -1,6 +1,7 @@
 package ua.waldemar.customdi.data
 
 import ua.waldemar.customdi.appfeature.common.ExecStatus
+import ua.waldemar.customdi.domain.SignInRepository
 import ua.waldemar.customdi.domain.SignUpRepository
 import ua.waldemar.customdi.main.publicapi.AuthFacade
 import ua.waldemar.customdi.main.publicapi.SignUpResult

@@ -18,13 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ua.waldemar.customdi.appfeature.common.EventConsumer
-import ua.waldemar.customdi.appfeature.common.LocalNavController
-import ua.waldemar.customdi.appfeature.common.featureViewModel
 import ua.waldemar.customdi.appfeature.forgot.presentation.ui.code.navigateToForgotPasswordCode
+import ua.waldemar.customdi.appfeature.forgot.presentation.ui.forgotPasswordViewModel
+import ua.waldemar.customdi.core.feature.LocalNavController
 
 @Composable
 internal fun ForgotPasswordEmailScreen(
-    viewModel: ForgotPasswordEmailViewModel = featureViewModel(),
+    viewModel: ForgotPasswordEmailViewModel = forgotPasswordViewModel()
 ) {
     val email by viewModel.email.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()

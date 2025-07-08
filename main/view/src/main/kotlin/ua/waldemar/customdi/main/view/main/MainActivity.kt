@@ -8,11 +8,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import ua.waldemar.customdi.core.feature.LocalViewModelFactoryProvider
 import ua.waldemar.customdi.main.view.main.application.MainApp
 import ua.waldemar.customdi.core.theme.CustomDITheme
 import ua.waldemar.customdi.main.view.di.MainDI
 import ua.waldemar.customdi.main.view.di.MainViewComponent
-import ua.waldemar.customdi.main.view.main.application.common.LocalViewModelFactoryProvider
 
 class MainActivity : ComponentActivity() {
 
@@ -26,20 +26,16 @@ class MainActivity : ComponentActivity() {
             return
         }
         MainDI.init(applicationContext, userId)
-        component = MainViewComponent()
+        component = MainViewComponent(this)
 
         setContent {
             CustomDITheme {
                 CompositionLocalProvider(
                     LocalViewModelFactoryProvider provides { modelClass ->
-                        object : ViewModelProvider.Factory {
-                            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                                return component.viewModelCreators.getValue(modelClass).invoke() as T
-                            }
-                        }
+                        modelClass.createFactory(component)
                     }
                 ) {
-                    MainApp()
+                    MainApp(component)
                 }
             }
         }
@@ -58,3 +54,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+@Suppress("UNCHECKED_CAST")
+private fun <VM : ViewModel> Class<VM>.createFactory(
+    container: MainViewComponent
+): ViewModelProvider.Factory =
+    object : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val creator = container.viewModelCreators[modelClass]
+                ?: throw IllegalStateException("Unknown ViewModel class: $modelClass")
+
+            return creator() as T
+        }
+    }

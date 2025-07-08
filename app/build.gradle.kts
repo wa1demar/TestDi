@@ -47,6 +47,7 @@ dependencies {
     implementation(projects.main.view)
     implementation(projects.main.publicapi)
     implementation(projects.core.di)
+    implementation(projects.core.feature)
     implementation(projects.core.theme)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
