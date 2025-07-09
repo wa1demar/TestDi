@@ -130,7 +130,20 @@ fun RowScope.AppNavigationItem(
         border = BorderStroke(0.dp, Color.Transparent),
         shape = RoundedCornerShape(4.dp),
         contentPadding = PaddingValues(0.dp),
-        onClick = { navController.navigate(route = screen.route, navOptions {  }) },
+        onClick = {
+            if (screen == MainScreenTabs.Withdraw) {
+                navController.navigate(route = screen.route, navOptions {
+                    popUpTo(WithdrawGraph) {
+                        inclusive = false
+                        saveState = false
+                    }
+                    launchSingleTop = true
+                    restoreState = false
+                })
+            } else {
+                navController.navigate(route = screen.route)
+            }
+        },
         modifier = Modifier.weight(1f)
     ) {
         Column {

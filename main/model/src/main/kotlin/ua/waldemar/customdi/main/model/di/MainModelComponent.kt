@@ -3,9 +3,11 @@ package ua.waldemar.customdi.main.model.di
 import android.content.Context
 import android.util.Log
 import ua.waldemar.customdi.main.model.di.modules.DomainModule
+import ua.waldemar.customdi.main.model.di.modules.AnalyticsModule
 
 class MainModelComponent(
-    val domainModule: DomainModule
+    val domainModule: DomainModule,
+    val analyticsModule: AnalyticsModule
 ) {
     companion object {
         @Volatile

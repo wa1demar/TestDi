@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navOptions
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -19,8 +20,18 @@ data object WithdrawGraph {
     data object WithdrawResultRoute
 }
 
+fun NavController.navigateToWithdrawGraph(navOptions: NavOptions? = null) =
+    navigate(WithdrawGraph, navOptions ?: navOptions {
+        popUpTo(WithdrawGraph) {
+            inclusive = false
+            saveState = false
+        }
+        launchSingleTop = true
+        restoreState = false
+    })
+
 fun NavController.navigateToStep2(navOptions: NavOptions? = null) =
-    navigate(WithdrawGraph.WithdrawFormStep2Route, navOptions)
+    navigate(WithdrawGraph.WithdrawFormStep2Route)
 
 fun NavController.navigateToConfirm(navOptions: NavOptions? = null) =
     navigate(WithdrawGraph.WithdrawFormConfirmRoute, navOptions)
