@@ -9,15 +9,8 @@ import ua.waldemar.customdi.core.di.viewModelFactories
 class ForgotPasswordViewModelFactoryContributor(
     private val interactor: ResetPasswordInteractor
 ) : ViewModelFactoryContributor {
-    override fun provide() = viewModelFactories {
+    override fun contribute() = viewModelFactories {
         factory<ForgotPasswordEmailViewModel> { ForgotPasswordEmailViewModel(interactor) }
-//        factory<ForgotPasswordCodeViewModel> { ForgotPasswordCodeViewModel() }
-    }
-}
-
-class ForgotPasswordCodeViewModelFactoryContributor() : ViewModelFactoryContributor {
-    override fun provide() = viewModelFactories {
-//        factory<ForgotPasswordEmailViewModel> { ForgotPasswordEmailViewModel(interactor) }
         factory<ForgotPasswordCodeViewModel> { ForgotPasswordCodeViewModel() }
     }
 }

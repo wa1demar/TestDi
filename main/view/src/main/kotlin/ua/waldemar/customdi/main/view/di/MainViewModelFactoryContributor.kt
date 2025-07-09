@@ -9,7 +9,7 @@ import ua.waldemar.customdi.main.view.main.application.screens.home.HomeViewMode
 class MainViewModelFactoryContributor(
     private val domainModule: DomainModule
 ) : ViewModelFactoryContributor {
-    override fun provide() = viewModelFactories {
+    override fun contribute() = viewModelFactories {
         factory<MainViewModel> { MainViewModel(domainModule.unexpectedErrorInteractor) }
         factory<HomeViewModel> { HomeViewModel(domainModule.getUserInfoFlow, domainModule.refreshUserInfo) }
     }

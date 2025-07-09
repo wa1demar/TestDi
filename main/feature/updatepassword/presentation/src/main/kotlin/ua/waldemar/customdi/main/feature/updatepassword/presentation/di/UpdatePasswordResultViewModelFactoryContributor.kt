@@ -5,7 +5,7 @@ import ua.waldemar.customdi.core.di.ViewModelFactoryContributor
 import ua.waldemar.customdi.main.feature.updatepassword.presentation.ui.UpdatePasswordResultViewModel
 
 class UpdatePasswordResultViewModelFactoryContributor : ViewModelFactoryContributor {
-    override fun provide(): Map<Class<out ViewModel>, () -> ViewModel> {
+    override fun contribute(): Map<Class<out ViewModel>, () -> ViewModel> {
         return mapOf(
             UpdatePasswordResultViewModel::class.java to { UpdatePasswordResultViewModel() }
         )

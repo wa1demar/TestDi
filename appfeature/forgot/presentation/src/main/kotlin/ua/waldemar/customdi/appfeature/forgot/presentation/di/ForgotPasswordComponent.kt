@@ -16,7 +16,6 @@ class ForgotPasswordComponent(appContext: Context) : FeatureComponent() {
     override val contributors: List<ViewModelFactoryContributor> by lazy {
         listOf(
             ForgotPasswordViewModelFactoryContributor(useCases.resetPasswordInteractor),
-            ForgotPasswordCodeViewModelFactoryContributor()
         )
     }
 }

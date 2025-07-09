@@ -13,14 +13,10 @@ class MainViewComponent(context: Context) {
     private val contributors: List<ViewModelFactoryContributor> by lazy {
         listOf(
             MainViewModelFactoryContributor(MainModelComponent.get().domainModule)
-        )
+        ) + featureComponents.flatMap { it.contributors }
     }
 
     val viewModelCreators: Map<Class<out ViewModel>, () -> ViewModel> by lazy {
-        contributors
-            .flatMap { it.provide().entries }
-            .associate { it.toPair() } +
-                featureComponents.flatMap { it.viewModelCreators.entries }
-                    .associate { it.toPair() }
+        contributors.flatMap { it.contribute().entries }.associate { it.toPair() }
     }
 }

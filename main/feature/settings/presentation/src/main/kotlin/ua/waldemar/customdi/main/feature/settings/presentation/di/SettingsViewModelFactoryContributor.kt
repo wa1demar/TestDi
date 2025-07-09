@@ -6,7 +6,7 @@ import ua.waldemar.customdi.main.feature.settings.domain.GetSettingsFlowUseCase
 import ua.waldemar.customdi.main.feature.settings.presentation.ui.SettingsViewModel
 
 class SettingsViewModelFactoryContributor(val useCases: GetSettingsFlowUseCase) : ViewModelFactoryContributor {
-    override fun provide() = viewModelFactories {
+    override fun contribute() = viewModelFactories {
         factory<SettingsViewModel> { SettingsViewModel(useCases) }
     }
 }

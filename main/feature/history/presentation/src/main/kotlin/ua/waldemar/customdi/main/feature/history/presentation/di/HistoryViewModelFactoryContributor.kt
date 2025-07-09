@@ -8,7 +8,7 @@ import ua.waldemar.customdi.main.feature.history.presentation.ui.HistoryViewMode
 class HistoryViewModelFactoryContributor(
     private val getHistoryUseCase: GetHistoryUseCase
 ) : ViewModelFactoryContributor {
-    override fun provide() = viewModelFactories {
+    override fun contribute() = viewModelFactories {
         factory<HistoryViewModel> { HistoryViewModel(getHistoryUseCase) }
     }
 }

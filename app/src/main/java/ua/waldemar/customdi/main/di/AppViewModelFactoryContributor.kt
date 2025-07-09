@@ -9,7 +9,7 @@ import ua.waldemar.customdi.presentation.ui.screens.signup.SignUpViewModel
 class AppViewModelFactoryContributor(
     private val authUseCases: AuthUseCaseModule
 ) : ViewModelFactoryContributor {
-    override fun provide() = viewModelFactories {
+    override fun contribute() = viewModelFactories {
         factory<SignInViewModel> { SignInViewModel(authUseCases.signInInteractor) }
         factory<SignUpViewModel> { SignUpViewModel(authUseCases.signUpInteractor, authUseCases.signInInteractor) }
     }

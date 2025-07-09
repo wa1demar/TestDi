@@ -8,7 +8,7 @@ import ua.waldemar.customdi.main.feature.updatepassword.presentation.ui.UpdatePa
 class UpdatePasswordFormViewModelFactoryContributor(
     private val useCase: UpdatePasswordUseCase
 ) : ViewModelFactoryContributor {
-    override fun provide(): Map<Class<out ViewModel>, () -> ViewModel> {
+    override fun contribute(): Map<Class<out ViewModel>, () -> ViewModel> {
         return mapOf(
             UpdatePasswordFormViewModel::class.java to { UpdatePasswordFormViewModel(useCase) }
         )

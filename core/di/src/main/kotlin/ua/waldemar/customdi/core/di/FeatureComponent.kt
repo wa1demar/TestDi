@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 
 abstract class FeatureComponent {
 
-    protected abstract val contributors: List<ViewModelFactoryContributor>
+    abstract val contributors: List<ViewModelFactoryContributor>
 
     val viewModelCreators: Map<Class<out ViewModel>, () -> ViewModel> by lazy {
-        contributors.flatMap { it.provide().entries }.associate { it.toPair() }
+        contributors.flatMap { it.contribute().entries }.associate { it.toPair() }
     }
 }

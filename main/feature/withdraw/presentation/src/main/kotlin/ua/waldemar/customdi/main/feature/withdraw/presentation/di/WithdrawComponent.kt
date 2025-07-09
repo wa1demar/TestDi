@@ -21,24 +21,12 @@ class WithdrawComponent : FeatureComponent(), HasViewModelCreators {
 
     override val contributors = listOf(
         object : ViewModelFactoryContributor {
-            override fun provide() = viewModelFactories {
+            override fun contribute() = viewModelFactories {
                 factory<WithdrawFormStep1ViewModel> { WithdrawFormStep1ViewModel(dataHolder) }
-            }
-        },
-        object : ViewModelFactoryContributor {
-            override fun provide() = viewModelFactories {
                 factory<WithdrawFormStep2ViewModel> { WithdrawFormStep2ViewModel(dataHolder) }
-            }
-        },
-        object : ViewModelFactoryContributor {
-            override fun provide() = viewModelFactories {
                 factory<WithdrawFormConfirmViewModel> { WithdrawFormConfirmViewModel(dataHolder, useCase) }
-            }
-        },
-        object : ViewModelFactoryContributor {
-            override fun provide() = viewModelFactories {
                 factory<WithdrawResultViewModel> { WithdrawResultViewModel() }
             }
-        },
+        }
     )
 }
