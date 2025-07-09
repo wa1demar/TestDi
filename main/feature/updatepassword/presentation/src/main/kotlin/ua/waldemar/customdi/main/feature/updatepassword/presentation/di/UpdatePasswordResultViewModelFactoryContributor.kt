@@ -1,4 +1,4 @@
-package ua.waldemar.customdi.main.feature.updatepassword.di
+package ua.waldemar.customdi.main.feature.updatepassword.presentation.di
 
 import androidx.lifecycle.ViewModel
 import ua.waldemar.customdi.core.di.ViewModelFactoryContributor

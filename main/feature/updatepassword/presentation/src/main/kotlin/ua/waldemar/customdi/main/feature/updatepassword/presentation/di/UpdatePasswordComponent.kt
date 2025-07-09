@@ -1,4 +1,4 @@
-package ua.waldemar.customdi.main.feature.updatepassword.di
+package ua.waldemar.customdi.main.feature.updatepassword.presentation.di
 
 import ua.waldemar.customdi.core.di.FeatureComponent
 import ua.waldemar.customdi.core.di.ViewModelFactoryContributor

@@ -31,7 +31,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import ua.waldemar.customdi.core.feature.LocalNavController
-import ua.waldemar.customdi.core.feature.TrackGraphExit
 import ua.waldemar.customdi.main.feature.history.presentation.HistoryRoute
 import ua.waldemar.customdi.main.feature.history.presentation.historyScreen
 import ua.waldemar.customdi.main.feature.history.presentation.navigateToHistory
@@ -40,6 +39,8 @@ import ua.waldemar.customdi.main.feature.settings.presentation.settingsScreen
 import ua.waldemar.customdi.main.feature.updatepassword.presentation.UpdatePasswordGraph
 import ua.waldemar.customdi.main.feature.updatepassword.presentation.navigateToUpdatePasswordGraph
 import ua.waldemar.customdi.main.feature.updatepassword.presentation.updatePasswordGraph
+import ua.waldemar.customdi.main.feature.withdraw.presentation.WithdrawGraph
+import ua.waldemar.customdi.main.feature.withdraw.presentation.withdrawGraph
 import ua.waldemar.customdi.main.view.di.MainViewComponent
 import ua.waldemar.customdi.main.view.main.application.screens.home.HomeScreenRoute
 import ua.waldemar.customdi.main.view.main.application.screens.home.homeScreen
@@ -88,6 +89,7 @@ internal fun MainApp(component: MainViewComponent) {
                         })
                     }
                 )
+                withdrawGraph()
             }
         }
     }
@@ -102,6 +104,10 @@ fun AppBottomBar(navController: NavHostController) {
     ) {
         AppNavigationItem(
             screen = MainScreenTabs.Home,
+            navController
+        )
+        AppNavigationItem(
+            screen = MainScreenTabs.Withdraw,
             navController
         )
         AppNavigationItem(
@@ -142,6 +148,11 @@ sealed class MainScreenTabs(val route: Any, val title: String, val icon: Int) {
         HomeScreenRoute,
         "Home",
         android.R.drawable.btn_star_big_on
+    )
+    data object Withdraw : MainScreenTabs(
+        WithdrawGraph,
+        "Withdraw",
+        android.R.drawable.ic_menu_preferences
     )
     data object History : MainScreenTabs(
         HistoryRoute,

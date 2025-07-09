@@ -30,6 +30,7 @@ include(":main:view", ":main:model")
 include(":main:feature:history:data", ":main:feature:history:domain", ":main:feature:history:presentation")
 include(":main:feature:settings:data", ":main:feature:settings:domain", ":main:feature:settings:presentation")
 include(":main:feature:updatepassword:data", ":main:feature:updatepassword:domain", ":main:feature:updatepassword:presentation")
+include(":main:feature:withdraw:data", ":main:feature:withdraw:domain", ":main:feature:withdraw:presentation")
 
 include(":main:shared:domain", ":main:shared:data")
 

@@ -2,12 +2,16 @@ package ua.waldemar.customdi.main.feature.updatepassword.presentation.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,6 +53,7 @@ fun UpdatePasswordFormScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdatePasswordContent(
     password: String,
@@ -58,29 +63,39 @@ fun UpdatePasswordContent(
     onUpdatePasswordClicked: () -> Unit,
     error: String?
 ) {
-    Column(Modifier.padding(16.dp)) {
-        OutlinedTextField(
-            value = password,
-            onValueChange = { onPasswordChanged(it) },
-            label = { Text("New password") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(Modifier.height(8.dp))
-        OutlinedTextField(
-            value = confirmPassword,
-            onValueChange = { onConfirmPasswordChanged(it) },
-            label = { Text("Confirm password") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(Modifier.height(8.dp))
-        Button(
-            onClick = { onUpdatePasswordClicked() },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Update Password")
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(text = "Update Password")
+                }
+            )
         }
-        if (error != null) {
-            Text(error, color = MaterialTheme.colorScheme.error)
+    ) { innerPaddings ->
+        Column(Modifier.fillMaxSize().padding(innerPaddings).padding(16.dp)) {
+            OutlinedTextField(
+                value = password,
+                onValueChange = { onPasswordChanged(it) },
+                label = { Text("New password") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.height(8.dp))
+            OutlinedTextField(
+                value = confirmPassword,
+                onValueChange = { onConfirmPasswordChanged(it) },
+                label = { Text("Confirm password") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.height(8.dp))
+            Button(
+                onClick = { onUpdatePasswordClicked() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Update Password")
+            }
+            if (error != null) {
+                Text(error, color = MaterialTheme.colorScheme.error)
+            }
         }
     }
 }

@@ -18,6 +18,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        compose = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
@@ -25,9 +26,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "21"
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
@@ -37,6 +35,7 @@ dependencies {
     implementation(projects.main.feature.history.presentation)
     implementation(projects.main.feature.settings.presentation)
     implementation(projects.main.feature.updatepassword.presentation)
+    implementation(projects.main.feature.withdraw.presentation)
 
     implementation(projects.core.di)
     implementation(projects.core.feature)

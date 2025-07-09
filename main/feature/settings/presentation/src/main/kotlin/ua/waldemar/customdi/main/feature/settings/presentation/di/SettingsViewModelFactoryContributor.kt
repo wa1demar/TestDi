@@ -1,12 +1,12 @@
 package ua.waldemar.customdi.main.feature.settings.presentation.di
 
-import androidx.lifecycle.ViewModel
 import ua.waldemar.customdi.core.di.ViewModelFactoryContributor
 import ua.waldemar.customdi.core.di.viewModelFactories
+import ua.waldemar.customdi.main.feature.settings.domain.GetSettingsFlowUseCase
 import ua.waldemar.customdi.main.feature.settings.presentation.ui.SettingsViewModel
 
-class SettingsViewModelFactoryContributor : ViewModelFactoryContributor {
+class SettingsViewModelFactoryContributor(val useCases: GetSettingsFlowUseCase) : ViewModelFactoryContributor {
     override fun provide() = viewModelFactories {
-        factory<SettingsViewModel> { SettingsViewModel() }
+        factory<SettingsViewModel> { SettingsViewModel(useCases) }
     }
 }
